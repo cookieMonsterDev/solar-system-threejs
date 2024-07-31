@@ -1,29 +1,28 @@
 import * as THREE from "three";
-
-// Utils to simplify work, etc.
-
-const debounce = (fn, ms) => {
-  let timer;
-  return function (...args) {
-    clearTimeout(timer);
-    timer = setTimeout(() => fn.apply(this, args), ms);
-  };
-};
-
+import { OrbitControls } from "jsm/controls/OrbitControls.js";
 /**
  * The three.js to work needs tree components that are renderer, camera and the scene.
  *
  * Here is the base setup for this:
  */
 
-const w = window.innerWidth;
-const h = window.innerHeight;
+let w = window.innerWidth;
+let h = window.innerHeight;
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 
 renderer.setSize(w, h);
 
 document.body.appendChild(renderer.domElement);
+
+// Change canvas size on window resize
+
+window.addEventListener("resize", () => {
+  w = window.innerWidth;
+  h = window.innerHeight;
+  renderer.setSize(w, h);
+  document.body.appendChild(renderer.domElement);
+});
 
 const fov = 75;
 const aspect = w / h;
@@ -37,6 +36,10 @@ const scene = new THREE.Scene();
 
 // Render some pre defined geometry
 
+const constrols = new OrbitControls(camera, renderer.domElement);
+constrols.enableDemping = true;
+constrols.dempingFactor = 0.03;
+
 const geo = new THREE.IcosahedronGeometry(1.0, 2);
 
 const mat = new THREE.MeshStandardMaterial({
@@ -44,6 +47,7 @@ const mat = new THREE.MeshStandardMaterial({
   flatShading: true,
 });
 const mesh = new THREE.Mesh(geo, mat);
+
 scene.add(mesh);
 
 const wireMat = new THREE.MeshBasicMaterial({
@@ -51,7 +55,8 @@ const wireMat = new THREE.MeshBasicMaterial({
   wireframe: true,
 });
 const wireMesh = new THREE.Mesh(geo, wireMat);
-wireMesh.scale.setScalar(1.001)
+wireMesh.scale.setScalar(1.001);
+
 scene.add(wireMesh);
 
 // Render some lights
@@ -60,8 +65,9 @@ scene.add(hemLight);
 
 const animate = (t = 0) => {
   requestAnimationFrame(animate);
-  geo.rotateY(0.001);
+  // geo.rotateY(0.001);
   renderer.render(scene, camera);
+  constrols.update();
 };
 
 animate();
