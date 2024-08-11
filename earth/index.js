@@ -44,22 +44,33 @@ earthGroup.add(earthMesh);
 const stars = getStarfield();
 scene.add(stars);
 
-// Front light
+// People lights
 
-const sunLight = new THREE.DirectionalLight(0xffffff, 2);
-sunLight.castShadow = true;
-sunLight.position.set(-2, 0.5, 1.5);
-scene.add(sunLight);
-
-// Back light
-
-const backLightMat = new THREE.MeshBasicMaterial({
-  opacity: 0.3,
+const lightsMat = new THREE.MeshBasicMaterial({
   map: loader.load("./textures/earth-2.jpg"),
   blending: THREE.AdditiveBlending,
 });
-const backLightMesh = new THREE.Mesh(geo, backLightMat);
-earthGroup.add(backLightMesh);
+const lightsMesh = new THREE.Mesh(geo, lightsMat);
+earthGroup.add(lightsMesh);
+
+// Clouds
+
+const cloudsMat = new THREE.MeshStandardMaterial({
+  opacity: 0.3,
+  transparent: true,
+  blending: THREE.AdditiveBlending,
+  map: loader.load("./textures/earth-clouds-1.jpg"),
+  alphaMap: loader.load("./textures/earth-clouds-2.jpg"),
+});
+const cloudsMesh = new THREE.Mesh(geo, cloudsMat);
+cloudsMesh.scale.setScalar(1.005);
+earthGroup.add(cloudsMesh);
+
+// Sun light
+
+const sunLight = new THREE.DirectionalLight(0xffffff, 1);
+sunLight.position.set(-2, 0.5, 1.5);
+scene.add(sunLight);
 
 // OrbitControls
 
@@ -73,7 +84,8 @@ const animate = (t = 0) => {
   requestAnimationFrame(animate);
 
   earthMesh.rotation.y += 0.001;
-  backLightMesh.rotation.y += 0.001;
+  lightsMesh.rotation.y += 0.001;
+  cloudsMesh.rotation.y += 0.001;
 
   renderer.render(scene, camera);
   controls.update();
