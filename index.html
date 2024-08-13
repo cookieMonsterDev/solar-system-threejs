@@ -11,6 +11,12 @@
         margin: 0;
       }
 
+      canvas {
+        position: fixed;
+        z-index: 5;
+        inset: 0;
+      }
+
       /* styles for loader fallback */
       @keyframes zoom {
         0% {
@@ -22,14 +28,15 @@
       }
 
       .loader-container {
+        z-index: 100;
         width: 100vw;
         height: 100vh;
+        overflow: hidden;
         position: relative;
         background-color: black;
       }
 
       .stars {
-        z-index: 10;
         position: absolute;
         top: 50%;
         left: 50%;
@@ -101,6 +108,7 @@
 
       .logo {
         position: absolute;
+        z-index: 10;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
@@ -132,7 +140,7 @@
     </style>
   </head>
   <body>
-    <div id="loader" class="loader-container">
+    <!-- <div id="loader" class="loader-container">
       <div class="stars"></div>
       <svg
         id="logo"
@@ -162,7 +170,7 @@
           d="M 11.7 91 L 0 91 L 0 0 L 17.29 0 L 42.51 57.59 L 67.34 0 L 85.02 0 L 85.02 91 L 72.67 91 L 72.67 15.73 L 48.36 70.46 L 36.14 70.46 L 11.7 15.73 L 11.7 91 Z"
         ></path>
       </svg>
-    </div>
+    </div> -->
     <script>
       window.addEventListener("load", () => {
         const loader = document.getElementById("loader");
