@@ -7,24 +7,21 @@ import {
 } from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
+import { Sun } from "./sun";
+import { Planet } from "./planet";
 import { generateStarfield } from "./starfield";
-import { sun, sunAnimation } from "./planets/sun";
-
-import { Planet } from "./planets/planet";
 
 const planets = [
   {
-    orbitSpeed: 0.01,
+    orbitSpeed: 0.001,
     orbitRadius: 10,
     orbitRotationDirection: "clockwise",
     planetSize: 1,
-    planetRotationSpeed: 0.01,
+    planetRotationSpeed: 0.005,
     planetRotationDirection: "clockwise",
     planetTexture: "/assets/mercury-map.jpg",
   },
 ];
-
-const test = new Planet(planets[0]).getPlanet();
 
 const w = window.innerWidth;
 const h = window.innerHeight;
@@ -43,20 +40,21 @@ renderer.toneMapping = ACESFilmicToneMapping;
 renderer.outputColorSpace = LinearSRGBColorSpace;
 document.body.appendChild(renderer.domElement);
 
+const sun = new Sun().getSun();
 const starfield = generateStarfield();
 
+scene.add(sun);
 scene.add(starfield);
-// scene.add(sun);
-scene.add(test);
+
+planets.forEach((item) => {
+  const planet = new Planet(item).getPlanet();
+  scene.add(planet);
+});
 
 renderer.render(scene, camera);
 
 const animate = () => {
   requestAnimationFrame(animate);
-
-  sunAnimation();
-  // mercuryAnimation();
-
   starfield.rotation.y -= 0.0001;
 
   controls.update();

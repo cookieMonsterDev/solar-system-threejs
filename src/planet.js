@@ -2,8 +2,8 @@ import {
   Mesh,
   Group,
   DoubleSide,
-  RingGeometry,
   AmbientLight,
+  TorusGeometry,
   TextureLoader,
   MeshBasicMaterial,
   IcosahedronGeometry,
@@ -36,8 +36,8 @@ export class Planet {
     this.planetRotationSpeed = planetRotationSpeed;
     this.planetRotationDirection = planetRotationDirection;
 
-    this.#loader = new TextureLoader();
     this.#group = new Group();
+    this.#loader = new TextureLoader();
 
     this.#init();
     this.#animate = this.#createAnimateFunction();
@@ -51,8 +51,7 @@ export class Planet {
   }
 
   #createOrbit() {
-    const innerRadius = this.orbitRadius - 0.005;
-    const orbitGeometry = new RingGeometry(innerRadius, this.orbitRadius, 100);
+    const orbitGeometry = new TorusGeometry(this.orbitRadius, 0.01, 100);
     const orbitMaterial = new MeshBasicMaterial({
       color: 0xadd8e6,
       side: DoubleSide,
