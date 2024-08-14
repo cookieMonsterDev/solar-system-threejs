@@ -21,6 +21,7 @@ const planets = [
     planetRotationSpeed: 0.005,
     planetRotationDirection: "counterclockwise",
     planetTexture: "/assets/mercury-map.jpg",
+    rimHex: 0xf9cf9f,
   },
   {
     orbitSpeed: 0.00035,
@@ -30,6 +31,7 @@ const planets = [
     planetRotationSpeed: 0.0005,
     planetRotationDirection: "clockwise",
     planetTexture: "/assets/venus-map.jpg",
+    rimHex: 0xb66f1f,
   },
   {
     orbitSpeed: 0.00024,
@@ -39,6 +41,7 @@ const planets = [
     planetRotationSpeed: 0.01,
     planetRotationDirection: "counterclockwise",
     planetTexture: "/assets/mars-map.jpg",
+    rimHex: 0xbc6434,
   },
   {
     orbitSpeed: 0.00013,
@@ -48,6 +51,7 @@ const planets = [
     planetRotationSpeed: 0.06,
     planetRotationDirection: "counterclockwise",
     planetTexture: "/assets/jupiter-map.jpg",
+    rimHex: 0xf3d6b6,
   },
   {
     orbitSpeed: 0.0001,
@@ -57,6 +61,7 @@ const planets = [
     planetRotationSpeed: 0.05,
     planetRotationDirection: "counterclockwise",
     planetTexture: "/assets/saturn-map.jpg",
+    rimHex: 0xd6b892,
   },
   {
     orbitSpeed: 0.00007,
@@ -66,6 +71,7 @@ const planets = [
     planetRotationSpeed: 0.02,
     planetRotationDirection: "clockwise",
     planetTexture: "/assets/uranus-map.jpg",
+    rimHex: 0x9ab6c2,
   },
   {
     orbitSpeed: 0.000054,
@@ -75,6 +81,7 @@ const planets = [
     planetRotationSpeed: 0.02,
     planetRotationDirection: "counterclockwise",
     planetTexture: "/assets/neptune-map.jpg",
+    rimHex: 0x5c7ed7,
   },
 ];
 
@@ -101,9 +108,13 @@ scene.add(sun);
 const earth = new Earth({
   orbitSpeed: 0.00029,
   orbitRadius: 16,
+  orbitRotationDirection: "clockwise",
   planetSize: 0.5,
+  planetAngle: (-23.4 * Math.PI) / 180,
   planetRotationSpeed: 0.01,
-}).getEarth();
+  planetRotationDirection: "counterclockwise",
+  planetTexture: "/assets/earth-map-1.jpg",
+}).getPlanet();
 scene.add(earth);
 
 const starfield = new Starfield().getStarfield();

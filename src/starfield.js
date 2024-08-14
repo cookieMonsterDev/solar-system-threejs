@@ -6,6 +6,7 @@ import {
   TextureLoader,
   PointsMaterial,
   BufferGeometry,
+  AdditiveBlending,
   Float32BufferAttribute,
 } from "three";
 
@@ -46,7 +47,10 @@ export class Starfield {
     geo.setAttribute("color", new Float32BufferAttribute(colors, 3));
     const mat = new PointsMaterial({
       size: 0.2,
+      alphaTest: 0.5,
+      transparent: true,
       vertexColors: true,
+      blending: AdditiveBlending,
       map: this.#loader.load("/assets/circle.png"),
     });
     const points = new Points(geo, mat);
@@ -73,7 +77,6 @@ export class Starfield {
   #createAnimateFunction() {
     return () => {
       requestAnimationFrame(this.#animate);
-
       this.#group.rotation.y += 0.00005;
     };
   }
