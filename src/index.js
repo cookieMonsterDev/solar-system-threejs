@@ -8,6 +8,7 @@ import {
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import { Sun } from "./sun";
+import { Earth } from "./earth";
 import { Planet } from "./planet";
 import { Starfield } from "./starfield";
 
@@ -96,6 +97,14 @@ document.body.appendChild(renderer.domElement);
 
 const sun = new Sun().getSun();
 scene.add(sun);
+
+const earth = new Earth({
+  orbitSpeed: 0.00029,
+  orbitRadius: 16,
+  planetSize: 0.5,
+  planetRotationSpeed: 0.01,
+}).getEarth();
+scene.add(earth);
 
 const starfield = new Starfield().getStarfield();
 scene.add(starfield);

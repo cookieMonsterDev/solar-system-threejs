@@ -1,21 +1,24 @@
 import {
   Mesh,
+  Color,
   Group,
   DoubleSide,
-  AmbientLight,
   TorusGeometry,
   TextureLoader,
+  ShaderMaterial,
+  SRGBColorSpace,
+  AdditiveBlending,
+  MeshPhongMaterial,
   MeshBasicMaterial,
   IcosahedronGeometry,
-  MeshStandardMaterial,
 } from "three";
 
 export class Planet {
   #group;
   #loader;
-  #planetMesh;
-  #orbitMesh;
   #animate;
+  #planetGroup;
+  #planetGeometry;
 
   constructor({
     orbitSpeed = 1,
@@ -26,7 +29,7 @@ export class Planet {
     planetRotationSpeed = 1,
     planetRotationDirection = "clockwise",
     planetTexture = "/assets/mercury-map.jpg",
-  }) {
+  } = {}) {
     this.orbitSpeed = orbitSpeed;
     this.orbitRadius = orbitRadius;
     this.orbitRotationDirection = orbitRotationDirection;
@@ -37,10 +40,13 @@ export class Planet {
     this.planetRotationDirection = planetRotationDirection;
 
     this.#group = new Group();
+    this.#planetGroup = new Group();
     this.#loader = new TextureLoader();
+    this.#planetGeometry = new IcosahedronGeometry(this.planetSize, 12);
 
     this.#createOrbit();
     this.#createPlanet();
+    this.#createGlow();
 
     this.#animate = this.#createAnimateFunction();
     this.#animate();
@@ -52,18 +58,73 @@ export class Planet {
       color: 0xadd8e6,
       side: DoubleSide,
     });
-    this.#orbitMesh = new Mesh(orbitGeometry, orbitMaterial);
-    this.#orbitMesh.rotation.x = (90 * Math.PI) / 180;
-    this.#group.add(this.#orbitMesh);
+    const orbitMesh = new Mesh(orbitGeometry, orbitMaterial);
+    orbitMesh.rotation.x = (90 * Math.PI) / 180;
+    this.#group.add(orbitMesh);
   }
 
   #createPlanet() {
     const map = this.#loader.load(this.planetTexture);
-    const planetGeometry = new IcosahedronGeometry(this.planetSize, 12);
-    const planetMaterial = new MeshStandardMaterial({ map });
-    this.#planetMesh = new Mesh(planetGeometry, planetMaterial);
-    this.#planetMesh.position.x = this.orbitRadius - this.planetSize / 4;
-    this.#group.add(this.#planetMesh);
+    const planetMaterial = new MeshPhongMaterial({ map });
+    planetMaterial.map.colorSpace = SRGBColorSpace;
+    const planetMesh = new Mesh(this.#planetGeometry, planetMaterial);
+    this.#planetGroup.add(planetMesh);
+    this.#planetGroup.position.x = this.orbitRadius - this.planetSize / 9;
+    this.#group.add(this.#planetGroup);
+  }
+
+  #createGlow(rimHex = 0x0088ff, facingHex = 0x000000) {
+    const uniforms = {
+      color1: { value: new Color(rimHex) },
+      color2: { value: new Color(facingHex) },
+      fresnelBias: { value: 0.2 },
+      fresnelScale: { value: 1.5 },
+      fresnelPower: { value: 4.0 },
+    };
+
+    const vertexShader = `
+    uniform float fresnelBias;
+    uniform float fresnelScale;
+    uniform float fresnelPower;
+    
+    varying float vReflectionFactor;
+    
+    void main() {
+      vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+      vec4 worldPosition = modelMatrix * vec4( position, 1.0 );
+    
+      vec3 worldNormal = normalize( mat3( modelMatrix[0].xyz, modelMatrix[1].xyz, modelMatrix[2].xyz ) * normal );
+    
+      vec3 I = worldPosition.xyz - cameraPosition;
+    
+      vReflectionFactor = fresnelBias + fresnelScale * pow( 1.0 + dot( normalize( I ), worldNormal ), fresnelPower );
+    
+      gl_Position = projectionMatrix * mvPosition;
+    }
+    `;
+
+    const fragmentShader = `
+      uniform vec3 color1;
+      uniform vec3 color2;
+      
+      varying float vReflectionFactor;
+      
+      void main() {
+        float f = clamp( vReflectionFactor, 0.0, 1.0 );
+        gl_FragColor = vec4(mix(color2, color1, vec3(f)), f);
+      }
+    `;
+
+    const planetGlowMaterial = new ShaderMaterial({
+      uniforms,
+      vertexShader,
+      fragmentShader,
+      transparent: true,
+      blending: AdditiveBlending,
+    });
+    const planetGlowMesh = new Mesh(this.#planetGeometry, planetGlowMaterial);
+    planetGlowMesh.scale.setScalar(1.1);
+    this.#planetGroup.add(planetGlowMesh);
   }
 
   #createAnimateFunction() {
@@ -85,9 +146,9 @@ export class Planet {
 
   #updatePlanetRotation() {
     if (this.planetRotationDirection === "clockwise") {
-      this.#planetMesh.rotation.y -= this.planetRotationSpeed;
+      this.#planetGroup.rotation.y -= this.planetRotationSpeed;
     } else if (this.planetRotationDirection === "counterclockwise") {
-      this.#planetMesh.rotation.y += this.planetRotationSpeed;
+      this.#planetGroup.rotation.y += this.planetRotationSpeed;
     }
   }
 
