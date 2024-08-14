@@ -4,14 +4,13 @@ import {
   Color,
   Vector3,
   BackSide,
-  AmbientLight,
+  PointLight,
   TextureLoader,
   ShaderMaterial,
   AdditiveBlending,
   DynamicDrawUsage,
   MeshBasicMaterial,
   IcosahedronGeometry,
-  MeshStandardMaterial,
 } from "three";
 import { ImprovedNoise } from "three/addons/math/ImprovedNoise.js";
 
@@ -45,7 +44,11 @@ export class Sun {
   #createSun() {
     const map = this.#loader.load(this.sunTexture);
     const sunGeometry = new IcosahedronGeometry(5, 12);
-    const sunMaterial = new MeshStandardMaterial({ map });
+    const sunMaterial = new MeshBasicMaterial({
+      map,
+      emissive: new Color(0xffff99),
+      emissiveIntensity: 1.5,
+    });
     const sunMesh = new Mesh(sunGeometry, sunMaterial);
     this.#group.add(sunMesh);
 
@@ -207,13 +210,14 @@ export class Sun {
   }
 
   #addLighting() {
-    const sunLight = new AmbientLight(0xfff3b5, 2.0);
+    const sunLight = new PointLight(0xffff99, 1000);
+    sunLight.position.set(0, 0, 0);
     this.#group.add(sunLight);
   }
 
   #createAnimateFunction() {
     return (t = 0) => {
-      const time = t * 0.0005;
+      const time = t * 0.00051;
       requestAnimationFrame(this.#animate);
       this.#group.userData.update(time);
     };

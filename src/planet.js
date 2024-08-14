@@ -41,7 +41,6 @@ export class Planet {
 
     this.#createOrbit();
     this.#createPlanet();
-    // this.#addLighting();
 
     this.#animate = this.#createAnimateFunction();
     this.#animate();
@@ -65,11 +64,6 @@ export class Planet {
     this.#planetMesh = new Mesh(planetGeometry, planetMaterial);
     this.#planetMesh.position.x = this.orbitRadius - this.planetSize / 4;
     this.#group.add(this.#planetMesh);
-  }
-
-  #addLighting() {
-    const planetLight = new AmbientLight(0xffffff, 1);
-    this.#group.add(planetLight);
   }
 
   #createAnimateFunction() {
