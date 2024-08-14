@@ -39,15 +39,12 @@ export class Planet {
     this.#group = new Group();
     this.#loader = new TextureLoader();
 
-    this.#init();
-    this.#animate = this.#createAnimateFunction();
-    this.#animate();
-  }
-
-  #init() {
     this.#createOrbit();
     this.#createPlanet();
-    this.#addLighting();
+    // this.#addLighting();
+
+    this.#animate = this.#createAnimateFunction();
+    this.#animate();
   }
 
   #createOrbit() {
@@ -71,7 +68,7 @@ export class Planet {
   }
 
   #addLighting() {
-    const planetLight = new AmbientLight(0xfff3b5, 2.0);
+    const planetLight = new AmbientLight(0xffffff, 1);
     this.#group.add(planetLight);
   }
 

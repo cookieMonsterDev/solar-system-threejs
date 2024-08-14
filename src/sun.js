@@ -44,7 +44,7 @@ export class Sun {
 
   #createSun() {
     const map = this.#loader.load(this.sunTexture);
-    const sunGeometry = new IcosahedronGeometry(3, 12);
+    const sunGeometry = new IcosahedronGeometry(5, 12);
     const sunMaterial = new MeshStandardMaterial({ map });
     const sunMesh = new Mesh(sunGeometry, sunMaterial);
     this.#group.add(sunMesh);
@@ -56,13 +56,13 @@ export class Sun {
     this.#group.add(this.#glow);
 
     this.#group.userData.update = (t) => {
-      this.#group.rotation.y = -t / 10;
+      this.#group.rotation.y = -t / 5;
       this.#corona.userData.update(t);
     };
   }
 
   #createCorona() {
-    const coronaGeometry = new IcosahedronGeometry(2.9, 12);
+    const coronaGeometry = new IcosahedronGeometry(4.9, 12);
     const coronaMaterial = new MeshBasicMaterial({
       color: 0xff0000,
       side: BackSide,
@@ -79,14 +79,14 @@ export class Sun {
     const update = (t) => {
       for (let i = 0; i < len; i += 1) {
         p.fromBufferAttribute(pos, i).normalize();
-        v3.copy(p).multiplyScalar(3.0);
+        v3.copy(p).multiplyScalar(5);
         let ns = coronaNoise.noise(
           v3.x + Math.cos(t),
           v3.y + Math.sin(t),
           v3.z + t
         );
         v3.copy(p)
-          .setLength(2.9)
+          .setLength(5)
           .addScaledVector(p, ns * 0.4);
         pos.setXYZ(i, v3.x, v3.y, v3.z);
       }
@@ -146,7 +146,7 @@ export class Sun {
       transparent: true,
       blending: AdditiveBlending,
     });
-    const sunGlowGeometry = new IcosahedronGeometry(3, 12);
+    const sunGlowGeometry = new IcosahedronGeometry(5, 12);
     const sunGlowMesh = new Mesh(sunGlowGeometry, sunGlowMaterial);
     sunGlowMesh.scale.setScalar(1.1);
     this.#glow = sunGlowMesh;
@@ -200,7 +200,7 @@ export class Sun {
       transparent: true,
       blending: AdditiveBlending,
     });
-    const sunRimGeometry = new IcosahedronGeometry(3, 12);
+    const sunRimGeometry = new IcosahedronGeometry(5, 12);
     const sunRimMesh = new Mesh(sunRimGeometry, sunRimMaterial);
     sunRimMesh.scale.setScalar(1.01);
     this.#sunRim = sunRimMesh;

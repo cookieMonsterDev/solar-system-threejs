@@ -9,17 +9,71 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import { Sun } from "./sun";
 import { Planet } from "./planet";
-import { generateStarfield } from "./starfield";
+import { Starfield } from "./starfield";
 
 const planets = [
   {
     orbitSpeed: 0.001,
     orbitRadius: 10,
     orbitRotationDirection: "clockwise",
-    planetSize: 1,
+    planetSize: 0.2,
     planetRotationSpeed: 0.005,
     planetRotationDirection: "clockwise",
     planetTexture: "/assets/mercury-map.jpg",
+  },
+  {
+    orbitSpeed: 0.001,
+    orbitRadius: 13,
+    orbitRotationDirection: "clockwise",
+    planetSize: 0.5,
+    planetRotationSpeed: 0.005,
+    planetRotationDirection: "clockwise",
+    planetTexture: "/assets/venus-map.jpg",
+  },
+  {
+    orbitSpeed: 0.001,
+    orbitRadius: 19,
+    orbitRotationDirection: "clockwise",
+    planetSize: 0.3,
+    planetRotationSpeed: 0.005,
+    planetRotationDirection: "clockwise",
+    planetTexture: "/assets/mars-map.jpg",
+  },
+  {
+    orbitSpeed: 0.001,
+    orbitRadius: 22,
+    orbitRotationDirection: "clockwise",
+    planetSize: 1,
+    planetRotationSpeed: 0.005,
+    planetRotationDirection: "clockwise",
+    planetTexture: "/assets/jupiter-map.jpg",
+  },
+  {
+    orbitSpeed: 0.001,
+    orbitRadius: 25,
+    orbitRotationDirection: "clockwise",
+    planetSize: 0.8,
+    planetRotationSpeed: 0.005,
+    planetRotationDirection: "clockwise",
+    planetTexture: "/assets/saturn-map.jpg",
+  },
+  {
+    orbitSpeed: 0.001,
+    orbitRadius: 28,
+    orbitRotationDirection: "clockwise",
+    planetSize: 0.5,
+    planetRotationSpeed: 0.005,
+    planetRotationDirection: "clockwise",
+    planetTexture: "/assets/uranus-map.jpg",
+  },
+  {
+    orbitSpeed: 0.001,
+    orbitRadius: 31,
+    orbitRotationDirection: "clockwise",
+    planetSize: 0.5,
+    planetRotationSpeed: 0.005,
+    planetRotationDirection: "clockwise",
+    planetTexture: "/assets/neptune-map.jpg",
   },
 ];
 
@@ -27,13 +81,13 @@ const w = window.innerWidth;
 const h = window.innerHeight;
 
 const scene = new Scene();
-const camera = new PerspectiveCamera(75, w / h, 0.1, 1000);
+const camera = new PerspectiveCamera(75, w / h, 0.1, 100);
 const renderer = new WebGLRenderer();
 const controls = new OrbitControls(camera, renderer.domElement);
 
-camera.position.z = 5;
-controls.minDistance = 2;
-controls.maxDistance = 55;
+controls.minDistance = 10;
+controls.maxDistance = 60;
+camera.position.set(30 * Math.cos(Math.PI / 6), 30 * Math.sin(Math.PI / 6), 40);
 
 renderer.setSize(w, h);
 renderer.toneMapping = ACESFilmicToneMapping;
@@ -41,9 +95,9 @@ renderer.outputColorSpace = LinearSRGBColorSpace;
 document.body.appendChild(renderer.domElement);
 
 const sun = new Sun().getSun();
-const starfield = generateStarfield();
-
 scene.add(sun);
+
+const starfield = new Starfield().getStarfield();
 scene.add(starfield);
 
 planets.forEach((item) => {
@@ -53,16 +107,6 @@ planets.forEach((item) => {
 
 renderer.render(scene, camera);
 
-const animate = () => {
-  requestAnimationFrame(animate);
-  starfield.rotation.y -= 0.0001;
-
-  controls.update();
-  renderer.render(scene, camera);
-};
-
-animate();
-
 window.addEventListener("resize", () => {
   const w = window.innerWidth;
   const h = window.innerHeight;
@@ -70,3 +114,11 @@ window.addEventListener("resize", () => {
   camera.aspect = w / h;
   camera.updateProjectionMatrix();
 });
+
+const animate = () => {
+  requestAnimationFrame(animate);
+  controls.update();
+  renderer.render(scene, camera);
+};
+
+animate();
