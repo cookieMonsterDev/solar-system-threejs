@@ -1,0 +1,28 @@
+ <svg
+        id="logo"
+        role="img"
+        width="64"
+        height="64"
+        class="logo"
+        version="1.1"
+        aria-hidden="true"
+        viewBox="-5 -5 210 210"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+      >
+        <polygon
+          class="hexagon"
+          stroke-width="10"
+          fill="rgb(0, 0, 0)"
+          stroke="rgb(255, 232, 31)"
+          points="52,16.8615612366939 148,16.8615612366939 196,100 148,183.138438763306 52,183.138438763306 4,100"
+        ></polygon>
+        <path
+          id="letter-m"
+          class="letter"
+          transform="translate(58, 55)"
+          fill="rgb(255, 232, 31)"
+          stroke="rgb(255, 232, 31)"
+          d="M 11.7 91 L 0 91 L 0 0 L 17.29 0 L 42.51 57.59 L 67.34 0 L 85.02 0 L 85.02 91 L 72.67 91 L 72.67 15.73 L 48.36 70.46 L 36.14 70.46 L 11.7 15.73 L 11.7 91 Z"
+        ></path>
+      </svg>
