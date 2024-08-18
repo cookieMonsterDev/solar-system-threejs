@@ -3,6 +3,7 @@ import {
   Color,
   Group,
   DoubleSide,
+  RingGeometry,
   TorusGeometry,
   TextureLoader,
   ShaderMaterial,
@@ -33,6 +34,8 @@ export class Planet {
 
     rimHex = 0x0088ff,
     facingHex = 0x000000,
+
+    rings = null,
   } = {}) {
     this.orbitSpeed = orbitSpeed;
     this.orbitRadius = orbitRadius;
@@ -44,12 +47,15 @@ export class Planet {
     this.planetRotationSpeed = planetRotationSpeed;
     this.planetRotationDirection = planetRotationDirection;
 
+    this.rings = rings;
+
     this.group = new Group();
     this.planetGroup = new Group();
     this.loader = new TextureLoader();
     this.planetGeometry = new IcosahedronGeometry(this.planetSize, 12);
 
     this.createOrbit();
+    this.createRings();
     this.createPlanet();
     this.createGlow(rimHex, facingHex);
 
@@ -64,7 +70,7 @@ export class Planet {
       side: DoubleSide,
     });
     const orbitMesh = new Mesh(orbitGeometry, orbitMaterial);
-    orbitMesh.rotation.x = (90 * Math.PI) / 180;
+    orbitMesh.rotation.x = Math.PI / 2;
     this.group.add(orbitMesh);
   }
 
@@ -131,6 +137,25 @@ export class Planet {
     const planetGlowMesh = new Mesh(this.planetGeometry, planetGlowMaterial);
     planetGlowMesh.scale.setScalar(1.1);
     this.planetGroup.add(planetGlowMesh);
+  }
+
+  createRings() {
+    if (!this.rings) return;
+
+    const innerRadius = this.planetSize + 0.1;
+    const outerRadius = innerRadius + this.rings.ringsSize;
+
+    const ringsGeometry = new RingGeometry(innerRadius, outerRadius, 32);
+
+    const ringsMaterial = new MeshBasicMaterial({
+      side: DoubleSide,
+      transparent: true,
+      map: this.loader.load(this.rings.ringsTexture),
+    });
+
+    const ringMeshs = new Mesh(ringsGeometry, ringsMaterial);
+    ringMeshs.rotation.x = Math.PI / 2;
+    this.planetGroup.add(ringMeshs);
   }
 
   createAnimateFunction() {
