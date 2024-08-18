@@ -20,7 +20,7 @@ const planets = [
     planetSize: 0.2,
     planetRotationSpeed: 0.005,
     planetRotationDirection: "counterclockwise",
-    planetTexture: "/assets/mercury-map.jpg",
+    planetTexture: "/solar-system-threejs/assets/mercury-map.jpg",
     rimHex: 0xf9cf9f,
   },
   {
@@ -30,7 +30,7 @@ const planets = [
     planetSize: 0.5,
     planetRotationSpeed: 0.0005,
     planetRotationDirection: "clockwise",
-    planetTexture: "/assets/venus-map.jpg",
+    planetTexture: "/solar-system-threejs/assets/venus-map.jpg",
     rimHex: 0xb66f1f,
   },
   {
@@ -40,7 +40,7 @@ const planets = [
     planetSize: 0.3,
     planetRotationSpeed: 0.01,
     planetRotationDirection: "counterclockwise",
-    planetTexture: "/assets/mars-map.jpg",
+    planetTexture: "/solar-system-threejs/assets/mars-map.jpg",
     rimHex: 0xbc6434,
   },
   {
@@ -50,7 +50,7 @@ const planets = [
     planetSize: 1,
     planetRotationSpeed: 0.06,
     planetRotationDirection: "counterclockwise",
-    planetTexture: "/assets/jupiter-map.jpg",
+    planetTexture: "/solar-system-threejs/assets/jupiter-map.jpg",
     rimHex: 0xf3d6b6,
   },
   {
@@ -60,11 +60,11 @@ const planets = [
     planetSize: 0.8,
     planetRotationSpeed: 0.05,
     planetRotationDirection: "counterclockwise",
-    planetTexture: "/assets/saturn-map.jpg",
+    planetTexture: "/solar-system-threejs/assets/saturn-map.jpg",
     rimHex: 0xd6b892,
     rings: {
       ringsSize: 0.5,
-      ringsTexture: "/assets/saturn-rings.jpg",
+      ringsTexture: "/solar-system-threejs/assets/saturn-rings.jpg",
     },
   },
   {
@@ -74,11 +74,11 @@ const planets = [
     planetSize: 0.5,
     planetRotationSpeed: 0.02,
     planetRotationDirection: "clockwise",
-    planetTexture: "/assets/uranus-map.jpg",
+    planetTexture: "/solar-system-threejs/assets/uranus-map.jpg",
     rimHex: 0x9ab6c2,
     rings: {
       ringsSize: 0.4,
-      ringsTexture: "/assets/uranus-rings.jpg",
+      ringsTexture: "/solar-system-threejs/assets/uranus-rings.jpg",
     },
   },
   {
@@ -88,7 +88,7 @@ const planets = [
     planetSize: 0.5,
     planetRotationSpeed: 0.02,
     planetRotationDirection: "counterclockwise",
-    planetTexture: "/assets/neptune-map.jpg",
+    planetTexture: "/solar-system-threejs/assets/neptune-map.jpg",
     rimHex: 0x5c7ed7,
   },
 ];
@@ -121,7 +121,7 @@ const earth = new Earth({
   planetAngle: (-23.4 * Math.PI) / 180,
   planetRotationSpeed: 0.01,
   planetRotationDirection: "counterclockwise",
-  planetTexture: "/assets/earth-map-1.jpg",
+  planetTexture: "/solar-system-threejs/assets/earth-map-1.jpg",
 }).getPlanet();
 scene.add(earth);
 

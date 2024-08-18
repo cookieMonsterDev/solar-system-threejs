@@ -23,7 +23,7 @@ export class Sun {
   #glow;
 
   constructor() {
-    this.sunTexture = "/assets/sun-map.jpg";
+    this.sunTexture = "/solar-system-threejs/assets/sun-map.jpg";
 
     this.#group = new Group();
     this.#loader = new TextureLoader();

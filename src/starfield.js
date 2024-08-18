@@ -51,7 +51,7 @@ export class Starfield {
       transparent: true,
       vertexColors: true,
       blending: AdditiveBlending,
-      map: this.#loader.load("/assets/circle.png"),
+      map: this.#loader.load("/solar-system-threejs/assets/circle.png"),
     });
     const points = new Points(geo, mat);
     this.#group.add(points);
