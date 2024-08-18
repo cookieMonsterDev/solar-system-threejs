@@ -62,6 +62,10 @@ const planets = [
     planetRotationDirection: "counterclockwise",
     planetTexture: "/assets/saturn-map.jpg",
     rimHex: 0xd6b892,
+    rings: {
+      ringsSize: 0.5,
+      ringsTexture: "/assets/saturn-rings.jpg",
+    },
   },
   {
     orbitSpeed: 0.00007,
@@ -72,6 +76,10 @@ const planets = [
     planetRotationDirection: "clockwise",
     planetTexture: "/assets/uranus-map.jpg",
     rimHex: 0x9ab6c2,
+    rings: {
+      ringsSize: 0.4,
+      ringsTexture: "/assets/uranus-rings.jpg",
+    },
   },
   {
     orbitSpeed: 0.000054,
