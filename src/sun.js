@@ -15,34 +15,31 @@ import {
 import { ImprovedNoise } from "three/addons/math/ImprovedNoise.js";
 
 export class Sun {
-  #group;
-  #loader;
-  #animate;
-  #corona;
-  #sunRim;
-  #glow;
+  group;
+  loader;
+  animate;
+  corona;
+  sunRim;
+  glow;
 
   constructor() {
     this.sunTexture = "/solar-system-threejs/assets/sun-map.jpg";
 
-    this.#group = new Group();
-    this.#loader = new TextureLoader();
+    this.group = new Group();
+    this.loader = new TextureLoader();
 
-    this.#init();
-    this.#animate = this.#createAnimateFunction();
-    this.#animate();
+    this.createCorona();
+    this.createRim();
+    this.addLighting();
+    this.createGlow();
+    this.createSun();
+
+    this.animate = this.createAnimateFunction();
+    this.animate();
   }
 
-  #init() {
-    this.#createCorona();
-    this.#createRim();
-    this.#addLighting();
-    this.#createGlow();
-    this.#createSun();
-  }
-
-  #createSun() {
-    const map = this.#loader.load(this.sunTexture);
+  createSun() {
+    const map = this.loader.load(this.sunTexture);
     const sunGeometry = new IcosahedronGeometry(5, 12);
     const sunMaterial = new MeshBasicMaterial({
       map,
@@ -50,21 +47,21 @@ export class Sun {
       emissiveIntensity: 1.5,
     });
     const sunMesh = new Mesh(sunGeometry, sunMaterial);
-    this.#group.add(sunMesh);
+    this.group.add(sunMesh);
 
-    this.#group.add(this.#sunRim);
+    this.group.add(this.sunRim);
 
-    this.#group.add(this.#corona);
+    this.group.add(this.corona);
 
-    this.#group.add(this.#glow);
+    this.group.add(this.glow);
 
-    this.#group.userData.update = (t) => {
-      this.#group.rotation.y = -t / 5;
-      this.#corona.userData.update(t);
+    this.group.userData.update = (t) => {
+      this.group.rotation.y = -t / 5;
+      this.corona.userData.update(t);
     };
   }
 
-  #createCorona() {
+  createCorona() {
     const coronaGeometry = new IcosahedronGeometry(4.9, 12);
     const coronaMaterial = new MeshBasicMaterial({
       color: 0xff0000,
@@ -97,10 +94,10 @@ export class Sun {
     };
 
     coronaMesh.userData.update = update;
-    this.#corona = coronaMesh;
+    this.corona = coronaMesh;
   }
 
-  #createGlow() {
+  createGlow() {
     const uniforms = {
       color1: { value: new Color(0x000000) },
       color2: { value: new Color(0xff0000) },
@@ -152,10 +149,10 @@ export class Sun {
     const sunGlowGeometry = new IcosahedronGeometry(5, 12);
     const sunGlowMesh = new Mesh(sunGlowGeometry, sunGlowMaterial);
     sunGlowMesh.scale.setScalar(1.1);
-    this.#glow = sunGlowMesh;
+    this.glow = sunGlowMesh;
   }
 
-  #createRim() {
+  createRim() {
     const uniforms = {
       color1: { value: new Color(0xffff99) },
       color2: { value: new Color(0x000000) },
@@ -206,24 +203,24 @@ export class Sun {
     const sunRimGeometry = new IcosahedronGeometry(5, 12);
     const sunRimMesh = new Mesh(sunRimGeometry, sunRimMaterial);
     sunRimMesh.scale.setScalar(1.01);
-    this.#sunRim = sunRimMesh;
+    this.sunRim = sunRimMesh;
   }
 
-  #addLighting() {
+  addLighting() {
     const sunLight = new PointLight(0xffff99, 1000);
     sunLight.position.set(0, 0, 0);
-    this.#group.add(sunLight);
+    this.group.add(sunLight);
   }
 
-  #createAnimateFunction() {
+  createAnimateFunction() {
     return (t = 0) => {
       const time = t * 0.00051;
-      requestAnimationFrame(this.#animate);
-      this.#group.userData.update(time);
+      requestAnimationFrame(this.animate);
+      this.group.userData.update(time);
     };
   }
 
   getSun() {
-    return this.#group;
+    return this.group;
   }
 }
