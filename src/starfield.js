@@ -82,6 +82,6 @@ export class Starfield {
   }
 
   getStarfield() {
-    return this.#group;
+    return this.group;
   }
 }
