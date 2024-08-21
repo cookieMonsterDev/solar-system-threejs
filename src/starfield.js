@@ -11,30 +11,30 @@ import {
 } from "three";
 
 export class Starfield {
-  #group;
-  #loader;
-  #animate;
+  group;
+  loader;
+  animate;
 
   constructor({ numStars = 1000 } = {}) {
     this.numStars = numStars;
 
-    this.#group = new Group();
-    this.#loader = new TextureLoader();
+    this.group = new Group();
+    this.loader = new TextureLoader();
 
-    this.#createStarfield();
+    this.createStarfield();
 
-    this.#animate = this.#createAnimateFunction();
-    this.#animate();
+    this.animate = this.#createAnimateFunction();
+    this.animate();
   }
 
-  #createStarfield() {
+  createStarfield() {
     let col;
     const verts = [];
     const colors = [];
     const positions = [];
 
     for (let i = 0; i < this.numStars; i += 1) {
-      let p = this.#getRandomSpherePoint();
+      let p = this.getRandomSpherePoint();
       const { pos, hue } = p;
       positions.push(p);
       col = new Color().setHSL(hue, 0.2, Math.random());
@@ -54,10 +54,10 @@ export class Starfield {
       map: this.#loader.load("/solar-system-threejs/assets/circle.png"),
     });
     const points = new Points(geo, mat);
-    this.#group.add(points);
+    this.group.add(points);
   }
 
-  #getRandomSpherePoint() {
+  getRandomSpherePoint() {
     const radius = Math.random() * 25 + 25;
     const u = Math.random();
     const v = Math.random();
@@ -74,10 +74,10 @@ export class Starfield {
     };
   }
 
-  #createAnimateFunction() {
+  createAnimateFunction() {
     return () => {
-      requestAnimationFrame(this.#animate);
-      this.#group.rotation.y += 0.00005;
+      requestAnimationFrame(this.animate);
+      this.group.rotation.y += 0.00005;
     };
   }
 
