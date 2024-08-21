@@ -23,7 +23,7 @@ export class Starfield {
 
     this.createStarfield();
 
-    this.animate = this.#createAnimateFunction();
+    this.animate = this.createAnimateFunction();
     this.animate();
   }
 
