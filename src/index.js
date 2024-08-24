@@ -98,7 +98,7 @@ const h = window.innerHeight;
 
 const scene = new Scene();
 const camera = new PerspectiveCamera(75, w / h, 0.1, 100);
-const renderer = new WebGLRenderer();
+const renderer = new WebGLRenderer({ antialias: true });
 const controls = new OrbitControls(camera, renderer.domElement);
 
 controls.minDistance = 10;
@@ -106,6 +106,7 @@ controls.maxDistance = 60;
 camera.position.set(30 * Math.cos(Math.PI / 6), 30 * Math.sin(Math.PI / 6), 40);
 
 renderer.setSize(w, h);
+renderer.setPixelRatio(window.devicePixelRatio);
 renderer.toneMapping = ACESFilmicToneMapping;
 renderer.outputColorSpace = LinearSRGBColorSpace;
 document.body.appendChild(renderer.domElement);
