@@ -9,12 +9,84 @@
     <style>
       body {
         margin: 0;
+        overflow: hidden;
+        background: #000;
       }
 
       canvas {
         position: fixed;
         z-index: 5;
         inset: 0;
+      }
+
+      .time-controls {
+        position: fixed;
+        z-index: 20;
+        top: 16px;
+        right: 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+        padding: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 10px;
+        background: rgba(8, 10, 18, 0.72);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+        font-family: "Segoe UI", system-ui, sans-serif;
+        user-select: none;
+      }
+
+      .time-controls__pause,
+      .time-controls__speed {
+        appearance: none;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.06);
+        color: rgba(255, 255, 255, 0.88);
+        cursor: pointer;
+        font: inherit;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        line-height: 1;
+        min-height: 36px;
+        padding: 0 12px;
+        transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+      }
+
+      .time-controls__pause:hover,
+      .time-controls__speed:hover {
+        background: rgba(255, 255, 255, 0.12);
+        border-color: rgba(255, 232, 31, 0.45);
+      }
+
+      .time-controls__pause.is-paused,
+      .time-controls__speed.is-active {
+        background: rgba(255, 232, 31, 0.18);
+        border-color: #ffe81f;
+        color: #ffe81f;
+      }
+
+      .time-controls__speeds {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(40px, 1fr));
+        gap: 6px;
+      }
+
+      @media (max-width: 520px) {
+        .time-controls {
+          top: 12px;
+          right: 12px;
+          left: 12px;
+          width: auto;
+        }
+
+        .time-controls__speeds {
+          grid-template-columns: repeat(5, 1fr);
+        }
       }
 
       /* styles for loader fallback */
